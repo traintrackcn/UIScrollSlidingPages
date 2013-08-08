@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-  s.name = 'UIScrollViewSlidingPages'
+  s.name = 'UIScrollSlidingPages'
   s.version = '1.0'
   s.platform = :ios, '5.0'
   s.license = 'MIT'
