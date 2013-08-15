@@ -36,7 +36,6 @@
 @protocol TTSlidingPagesDataSource <NSObject>
 
 -(int)numberOfPagesForSlidingPagesViewController:(TTScrollSlidingPagesController *)source;
-
 -(TTSlidingPage *)pageForSlidingPagesViewController:(TTScrollSlidingPagesController*)source atIndex:(int)index;
 -(TTSlidingPageTitle *)titleForSlidingPagesViewController:(TTScrollSlidingPagesController*)source atIndex:(int)index;
 
@@ -45,6 +44,6 @@
  *   @brief - This should NOT be used when paging is disabled.  - An optional method to specify the width of one of your pages, if you don't want it to be the full width of the control.
  *   This should NOT be used when paging is disabled - An optional method to specify the width of one of your pages, if you don't implement this method each page will just be the width of the TTScrollSlidingPagesController view.**/
 -(int)widthForPageOnSlidingPagesViewController:(TTScrollSlidingPagesController*)source atIndex:(int)index;
-
+- (void)pageChanagedForSlidingPagesViewController:(TTScrollSlidingPagesController *)source;
 
 @end

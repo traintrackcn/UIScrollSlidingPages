@@ -35,7 +35,6 @@
 @interface TTScrollSlidingPagesController : UIViewController<UIScrollViewDelegate>{
     int currentPageBeforeRotation;
     bool viewDidLoadHasBeenCalled;
-    UIPageControl *pageControl;
     TTScrollViewWrapper *topScrollViewWrapper;
     UIScrollView *bottomScrollView, *topScrollView;
 }
@@ -87,7 +86,7 @@
 /**  @property disableUIPageControl
  *   @brief Disables the UIPageControl (the page dots) at the top of the screen
  *   If set to YES the UIPageControl at the top of the screen will not be added. Default is NO. **/
-@property (nonatomic) BOOL disableUIPageControl;
+//@property (nonatomic) BOOL disableUIPageControl;
 
 /**  @property initialPageNumber
  *   @brief Sets the scroller to scroll to a specific page initially
