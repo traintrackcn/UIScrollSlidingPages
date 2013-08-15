@@ -336,6 +336,11 @@
 #pragma mark - dispatcher
 
 - (void)dispatchPageChanged{
+    
+    if (pageBeforeScrolling == [self getCurrentDisplayedPage]) return;
+    
+    NSLog(@"dispatchPageChanged");
+    
     if ([_dataSource respondsToSelector:@selector(pageChanagedForSlidingPagesViewController:)]) {
         [_dataSource pageChanagedForSlidingPagesViewController:self];
     }
@@ -421,9 +426,8 @@
 
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-    if (pageBeforeScrolling != [self getCurrentDisplayedPage]) {
-        [self dispatchPageChanged];
-    }
+    [self dispatchPageChanged];
+    
     
     //store the page you were on so if you have a rotate event, or you come back to this view you know what page to start at. (for example from a navigation controller), the viewDidLayoutSubviews method will know which page to navigate to (for example if the screen was portrait when you left, then you changed to landscape, and navigate back, then viewDidLayoutSubviews will need to change all the sizes of the views, but still know what page to set the offset to)
     currentPageBeforeRotation = [self getCurrentDisplayedPage];
@@ -432,6 +436,10 @@
     if (self.pagingEnabled == YES && [self.dataSource respondsToSelector:@selector(widthForPageOnSlidingPagesViewController:atIndex:)]){
         NSLog(@"Warning: TTScrollSlidingPagesController. You have paging enabled in the TTScrollSlidingPagesController (pagingEnabled is either not set, or specifically set to YES), but you have also implemented widthForPageOnSlidingPagesViewController:atIndex:. ScrollViews do not cope well with paging being disabled when items have custom widths. You may get weird behaviour with your paging, in which case you should either disable paging (set pagingEnabled to NO) and keep widthForPageOnSlidingPagesViewController:atIndex: implented, or not implement widthForPageOnSlidingPagesViewController:atIndex: in your datasource for the TTScrollSlidingPagesController instance.");
     }
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{
+    [self dispatchPageChanged];
 }
 
 
