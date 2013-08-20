@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A82043B17C2020500FC6D04 /* TTSlidingNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A82043A17C2020500FC6D04 /* TTSlidingNode.m */; };
+		4A97404F17C2F13700AB9517 /* TTBlankViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A97404D17C2F13700AB9517 /* TTBlankViewController.m */; };
+		4A97405017C2F13700AB9517 /* TTBlankViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A97404E17C2F13700AB9517 /* TTBlankViewController.xib */; };
 		9F2035E61706475B00438E50 /* diagmonds.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F2035E31706475B00438E50 /* diagmonds.png */; };
 		9F2035E71706475B00438E50 /* diagmonds_@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F2035E41706475B00438E50 /* diagmonds_@2X.png */; };
 		9F2035E81706475B00438E50 /* readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9F2035E51706475B00438E50 /* readme.txt */; };
@@ -36,6 +39,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4A82043917C2020500FC6D04 /* TTSlidingNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTSlidingNode.h; sourceTree = "<group>"; };
+		4A82043A17C2020500FC6D04 /* TTSlidingNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTSlidingNode.m; sourceTree = "<group>"; };
+		4A97404C17C2F13700AB9517 /* TTBlankViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTBlankViewController.h; sourceTree = "<group>"; };
+		4A97404D17C2F13700AB9517 /* TTBlankViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTBlankViewController.m; sourceTree = "<group>"; };
+		4A97404E17C2F13700AB9517 /* TTBlankViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTBlankViewController.xib; sourceTree = "<group>"; };
 		9F2035E31706475B00438E50 /* diagmonds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = diagmonds.png; sourceTree = "<group>"; };
 		9F2035E41706475B00438E50 /* diagmonds_@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "diagmonds_@2X.png"; sourceTree = "<group>"; };
 		9F2035E51706475B00438E50 /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
@@ -185,6 +193,8 @@
 				9F602A66171E083F00088A9C /* TTBlackTriangle.m */,
 				9FFDC5CA1722EEA1002A5689 /* TTScrollViewWrapper.h */,
 				9FFDC5CB1722EEA1002A5689 /* TTScrollViewWrapper.m */,
+				4A82043917C2020500FC6D04 /* TTSlidingNode.h */,
+				4A82043A17C2020500FC6D04 /* TTSlidingNode.m */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -200,6 +210,9 @@
 				9F70249016DBF6650003B5FA /* Supporting Files */,
 				9F70249816DBF6650003B5FA /* TTAppDelegate.h */,
 				9F70249916DBF6650003B5FA /* TTAppDelegate.m */,
+				4A97404C17C2F13700AB9517 /* TTBlankViewController.h */,
+				4A97404D17C2F13700AB9517 /* TTBlankViewController.m */,
+				4A97404E17C2F13700AB9517 /* TTBlankViewController.xib */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -291,6 +304,7 @@
 				9F2035E71706475B00438E50 /* diagmonds_@2X.png in Resources */,
 				9F2035E81706475B00438E50 /* readme.txt in Resources */,
 				9F2035EB170648E600438E50 /* about-tomthorpelogo.png in Resources */,
+				4A97405017C2F13700AB9517 /* TTBlankViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,6 +326,8 @@
 				9F936B55170650EF001622D8 /* TTSlidingPageTitle.m in Sources */,
 				9F602A67171E083F00088A9C /* TTBlackTriangle.m in Sources */,
 				9FFDC5CC1722EEA1002A5689 /* TTScrollViewWrapper.m in Sources */,
+				4A82043B17C2020500FC6D04 /* TTSlidingNode.m in Sources */,
+				4A97404F17C2F13700AB9517 /* TTBlankViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

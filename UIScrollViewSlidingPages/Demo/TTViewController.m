@@ -12,6 +12,7 @@
 #import "TabTwoViewController.h"
 #import "TTSlidingPage.h"
 #import "TTSlidingPageTitle.h"
+#import "TTBlankViewController.h"
 
 @interface TTViewController ()
     @property (strong, nonatomic) TTScrollSlidingPagesController *slider;
@@ -67,46 +68,28 @@
 
 #pragma mark TTSlidingPagesDataSource methods
 -(int)numberOfPagesForSlidingPagesViewController:(TTScrollSlidingPagesController *)source{
-    return 7; //just return 7 pages as an example
+    return 5; //just return 7 pages as an example
 }
 
 -(TTSlidingPage *)pageForSlidingPagesViewController:(TTScrollSlidingPagesController*)source atIndex:(int)index{
-    UIViewController *viewController;
-    if (index % 2 == 0){ //just an example, alternating views between one example table view and another.
-        viewController = [[TabOneViewController alloc] init];
-    } else {
-        viewController = [[TabTwoViewController alloc] init];
-    }
+    TTBlankViewController *vc = [[TTBlankViewController alloc] initWithNibName:@"TTBlankViewController" bundle:nil];
+//    NSLog(@"[vc textLabel]  -> %@", [vc textLabel] );
+    [vc setIndex:index];
     
-    return [[TTSlidingPage alloc] initWithContentViewController:viewController];
+    
+    return [[TTSlidingPage alloc] initWithContentViewController:vc];
 }
 
 -(TTSlidingPageTitle *)titleForSlidingPagesViewController:(TTScrollSlidingPagesController *)source atIndex:(int)index{
     TTSlidingPageTitle *title;
-    if (index == 0){
-        //use a image as the header for the first page
-        title= [[TTSlidingPageTitle alloc] initWithHeaderImage:[UIImage imageNamed:@"about-tomthorpelogo.png"]];
-    } else {
-        //all other pages just use a simple text header
-        switch (index) {
-            case 1:
-                title = [[TTSlidingPageTitle alloc] initWithHeaderText:@"Page 2"];
-                break;
-            case 2:
-                title = [[TTSlidingPageTitle alloc] initWithHeaderText:@"Another Page"];
-                break;
-            case 3:
-                title = [[TTSlidingPageTitle alloc] initWithHeaderText:@"More Stuff"];
-                break;
-            case 4:
-                title = [[TTSlidingPageTitle alloc] initWithHeaderText:@"Another Page"];
-                break;
-            default:
-                title = [[TTSlidingPageTitle alloc] initWithHeaderText:[NSString stringWithFormat:@"Page %d", index+1]];
-                break;
-        }
-        
+
+    //all other pages just use a simple text header
+    switch (index) {
+        default:
+            title = [[TTSlidingPageTitle alloc] initWithHeaderText:[NSString stringWithFormat:@"P %d", index]];
+            break;
     }
+ 
     return title;
 }
 
@@ -119,5 +102,9 @@
 //        return self.view.frame.size.width;
 //    }
 //}
+
+- (void)pageChanagedForSlidingPagesViewController:(TTScrollSlidingPagesController *)source{
+    NSLog(@"pageIndex -> %d", [source displayedPageIndex]);
+}
 
 @end

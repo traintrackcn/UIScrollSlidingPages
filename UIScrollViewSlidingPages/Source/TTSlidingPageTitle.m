@@ -41,13 +41,13 @@
     return (self);
 }
 
--(id)initWithHeaderImage:(UIImage*)headerImage{
-    self = [super init];
-    if(self)
-    {
-        self.headerImage = headerImage;
-    }
-    return (self);
-}
+//-(id)initWithHeaderImage:(UIImage*)headerImage{
+//    self = [super init];
+//    if(self)
+//    {
+//        self.headerImage = headerImage;
+//    }
+//    return (self);
+//}
 
 @end
