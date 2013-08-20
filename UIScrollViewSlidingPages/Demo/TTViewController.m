@@ -48,7 +48,7 @@
     //slider.initialPageNumber = 1;
     //slider.pagingEnabled = NO;
     //slider.zoomOutAnimationDisabled = YES;
-    
+    self.slider.loop = YES;
     //set the datasource.
     self.slider.dataSource = self;
     
@@ -68,7 +68,7 @@
 
 #pragma mark TTSlidingPagesDataSource methods
 -(int)numberOfPagesForSlidingPagesViewController:(TTScrollSlidingPagesController *)source{
-    return 5; //just return 7 pages as an example
+    return 4; //just return 7 pages as an example
 }
 
 -(TTSlidingPage *)pageForSlidingPagesViewController:(TTScrollSlidingPagesController*)source atIndex:(int)index{

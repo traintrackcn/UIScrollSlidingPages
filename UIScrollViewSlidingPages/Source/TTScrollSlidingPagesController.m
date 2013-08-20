@@ -158,7 +158,6 @@
 
 - (void)assemble{
     viewDidLoadHasBeenCalled = YES;
-    indexBeforeScrolling = [self displayedIndexForScroll];
     int nextYPosition = 0;
     [self assembleTopScrollViewWithYPosition:nextYPosition];
     [self assembleTopScrollViewWrapperWithYPosition:nextYPosition];
@@ -427,6 +426,7 @@
     if (!animated){
         //if the scroll is not animated, we also need to move the topScrollView - we don't want (if it's animated, it'll call the scrollViewDidScroll delegate which keeps everything in sync, so calling it twice would mess things up).
         [titleContainer setContentOffset: CGPointMake([self titlePositionXForIndex:index], 0) animated:animated];
+        indexBeforeScrolling = [self displayedIndexCurrent];
     }
     
 }
