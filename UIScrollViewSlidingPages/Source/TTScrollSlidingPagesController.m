@@ -37,7 +37,7 @@
 #import "TTSlidingNode.h"
 
 @interface TTScrollSlidingPagesController (){
-    int indexBeforeScrolling;
+    int indexBefore;
     NSMutableArray *nodes;
     bool viewDidLoadHasBeenCalled;
     TTScrollViewWrapper *titleContainerWrapper;
@@ -90,69 +90,12 @@
     //this will get called when the screen rotates, at which point we need to fix the frames of all the subviews to be the new correct x position horizontally. The autolayout mask will automatically change the width for us.
 
     [self updateTitleConainerWrapperShadowPath];
-    [self updatePosition];
+    [self updateTitlesAndPagesPosition];
     [self updateScrollContentSize];
-    [self scrollToDisplayedIndexImmediately];
+    [self jumpToDisplayedIndexTarget];
 }
 
-#pragma mark - update actions
 
-- (void)updateTitleConainerWrapperShadowPath{
-    CGPathRef shadowPath = [UIBezierPath bezierPathWithRect:titleContainerWrapper.bounds].CGPath;
-    [titleContainerWrapper.layer setShadowPath:shadowPath];
-    //rasterize (also due to the better performance)
-    titleContainerWrapper.layer.shouldRasterize = YES;
-    titleContainerWrapper.layer.rasterizationScale = [UIScreen mainScreen].scale;
-}
-
-- (void)updateContentOffset:(CGPoint)contentOffset forScrollView:(UIScrollView *)scrollView{
-    scrollView.delegate = nil;
-    scrollView.contentOffset = contentOffset;
-    scrollView.delegate = self;
-}
-
-- (void)updatePosition{
-    NSLog(@"========== updatePosition =========");
-//        view.transform = CGAffineTransformIdentity;
-    
-    TTSlidingNode *node = [nodes objectAtIndex:[self pageIndexAtFirstIndex]];
-    NSLog(@"pageIndexAtFirstIndex -> %d",[self pageIndexAtFirstIndex]);
-    for (int i=0; i<[self numOfPages]; i++) {
-        UIView *titleV = [node titleView];
-        UIView *pageV = [node pageView];
-        CGPoint titleOrigin = CGPointMake([self titleWidth]*i, 0);
-        CGRect titleFrame;
-        CGPoint pageOrigin = CGPointMake([self pageWidth]*i, 0);
-        CGRect pageFrame;
-        
-        titleFrame.origin = titleOrigin;
-        titleFrame.size = [self titleSize];
-        titleV.frame = titleFrame;
-        
-        pageFrame.origin = pageOrigin;
-        pageFrame.size = [self pageSize];
-        pageV.frame = pageFrame;
-        
-        NSLog(@"displayIndex:%d pageIndex:%d titleX:%f   pageX:%f",i,[node pageIndex], titleOrigin.x, pageOrigin.x);
-        
-        node = [node nextNode];
-    }
-    
-    
-//    NSLog(@"TitleContainer")
-    
-    NSLog(@"============================");
-}
-
-- (void)updateScrollContentSize{
-//    CGFloat topScrollViewContentW = self.numOfPages * self.titleWidth;
-//    CGFloat topScrollViewContentH = titleC.frame.size.height;
-    titleContainer.contentSize = [self contentSizeOfTitleContainer];
-    
-//    CGFloat bottomScrollViewContentW = self.numOfPages * self.pageWidth;
-//    CGFloat bottomScrollViewContentH = pageContainer.frame.size.height;
-    pageContainer.contentSize = [self contentSizeOfPageContainer];
-}
 
 #pragma mark - assemblers
 
@@ -350,11 +293,10 @@
 
     //find out what page in the topscroller would be at that x location
     int index = [self titleViewIndexForPositionX:point.x];
-    NSLog(@"tappedTitleContainer index -> %d", index);
+//    NSLog(@"tappedTitleContainer index -> %d", index);
     //if not already on the page and the page is within the bounds of the pages we have, scroll to the page!
     if (index < [self numOfPages]){
-        
-        [self scrollToIndex:index animated:YES];
+        [self scrollToIndex:index];
     }
     
 }
@@ -367,45 +309,31 @@
 
 - (void)dispatchPageChanged{
     
-    if (indexBeforeScrolling == [self displayedIndexCurrent]) return;
+    if (indexBefore == [self displayedIndexCurrent]) return;
     
-    int offset = abs(indexBeforeScrolling-[self displayedIndexCurrent]);
-    NSLog(@"offset -> %d   indexBeforeScrolling -> %d displayedIndexCurrent -> %d", offset, indexBeforeScrolling, [self displayedIndexCurrent]);
-    if (indexBeforeScrolling>[self displayedIndexCurrent]) {
+    int offset = abs(indexBefore-[self displayedIndexCurrent]);
+//    NSLog(@"offset -> %d   indexBefore -> %d displayedIndexCurrent -> %d", offset, indexBefore, [self displayedIndexCurrent]);
+    if (indexBefore>[self displayedIndexCurrent]) {
         [self didScrollToPreviousPage:offset];
+        [self didScrollToIndex:[self displayedIndexCurrent]];
     }else{
         [self didScrollToNextPage:offset];
+        [self didScrollToIndex:[self displayedIndexCurrent]];
     }
+    
+    if ([self loop]) {
+        [self updateTitlesAndPagesPosition];
+        [self jumpToDisplayedIndexTarget];
+    }
+    
+    
     
     if ([_dataSource respondsToSelector:@selector(pageChanagedForSlidingPagesViewController:)]) {
         [_dataSource pageChanagedForSlidingPagesViewController:self];
     }
-    indexBeforeScrolling = [self displayedIndexCurrent];
-}
-
-
-
-- (void)didScrollToPreviousPage:(int)offset{
-    NSLog(@"previousPage");
     
-    int pageIndex = [[self previousNodeWithOffset:offset] pageIndex];
-    [self setDisplayedPageIndex:pageIndex];
-    NSLog(@"current displayedPageIndex -> %d", [self displayedPageIndex]);
     
-    if (![self loop]) return;
-    [self updatePosition];
-    [self scrollToDisplayedIndexImmediately];
-}
-
-- (void)didScrollToNextPage:(int)offset{
-    NSLog(@"nextPage");
-    int pageIndex = [[self nextNodeWithOffset:offset] pageIndex];
-    [self setDisplayedPageIndex:pageIndex];
-    NSLog(@"current displayedPageIndex -> %d", [self displayedPageIndex]);
     
-    if (![self loop]) return;
-    [self updatePosition];
-    [self scrollToDisplayedIndexImmediately];
 }
 
 #pragma mark - scroll actions
@@ -416,24 +344,56 @@
  @param page The page number to scroll to.
  @param animated Whether the scroll should be animated to move along to the page (YES) or just directly scroll to the page (NO)
  */
--(void)scrollToIndex:(int)index animated:(BOOL)animated{
-    
-    NSLog(@"scrollToIndex -> %d", index);
-    indexBeforeScrolling = [self displayedIndexCurrent];
-    
-    //scroll to the page
-    [pageContainer setContentOffset: CGPointMake([self pagePositionXForIndex:index],0) animated:animated];
-    if (!animated){
-        //if the scroll is not animated, we also need to move the topScrollView - we don't want (if it's animated, it'll call the scrollViewDidScroll delegate which keeps everything in sync, so calling it twice would mess things up).
-        [titleContainer setContentOffset: CGPointMake([self titlePositionXForIndex:index], 0) animated:animated];
-        indexBeforeScrolling = [self displayedIndexCurrent];
-    }
+-(void)scrollToIndex:(int)index{
+    NSLog(@"========== scrollToIndex -> %d ==========", index);
+    [pageContainer setContentOffset: CGPointMake([self pagePositionXForIndex:index],0) animated:YES];
+}
+
+- (void)jumpToDisplayedIndexTarget{
+    [self jumpToIndex:[self displayedIndexTarget]];
+}
+
+- (void)jumpToIndex:(int)index{
+    NSLog(@"========== jumpToIndex -> %d ==========", index);
+    [self willJumpToIndex:index];
+    [pageContainer setContentOffset: CGPointMake([self pagePositionXForIndex:index],0) animated:NO];
+    [titleContainer setContentOffset: CGPointMake([self titlePositionXForIndex:index], 0) animated:NO];
+    [self didJumpToIndex:index];
     
 }
 
-- (void)scrollToDisplayedIndexImmediately{
-    NSLog(@"========== scrollToDisplayedIndexImmediately ==========");
-    [self scrollToIndex:[self displayedIndexForScroll] animated:NO];
+- (void)didScrollToPreviousPage:(int)offset{
+    //    NSLog(@"previousPage");
+    int pageIndex = [[self previousNodeWithOffset:offset] pageIndex];
+    [self setDisplayedPageIndex:pageIndex];
+    //    NSLog(@"current displayedPageIndex -> %d", [self displayedPageIndex]);
+}
+
+- (void)didScrollToNextPage:(int)offset{
+    //    NSLog(@"nextPage");
+    int pageIndex = [[self nextNodeWithOffset:offset] pageIndex];
+    [self setDisplayedPageIndex:pageIndex];
+    //    NSLog(@"current displayedPageIndex -> %d", [self displayedPageIndex]);
+}
+
+//- (void)willScrollToIndex:(int)index{
+//    NSLog(@"willScrollToIndex -> %d", index);
+//    indexBefore = [self displayedIndexCurrent];
+//}
+
+- (void)didScrollToIndex:(int)index{
+    NSLog(@"didScrollToIndex -> %d indexBefore->%d", index, indexBefore);
+    indexBefore = [self displayedIndexCurrent];
+}
+
+- (void)willJumpToIndex:(int)index{
+    NSLog(@"willJumpToIndex -> %d indexBefore->%d", index, indexBefore);
+    indexBefore = [self displayedIndexCurrent];
+}
+
+- (void)didJumpToIndex:(int)index{
+    NSLog(@"didJumpToIndex -> %d indexBefore->%d", index, indexBefore);
+    indexBefore = [self displayedIndexCurrent];
 }
 
 
@@ -521,17 +481,6 @@
 }
 
 
-
-#pragma mark property setters - for when need to do fancy things as well as set the value
-
--(void)setDataSource:(id<TTSlidingPagesDataSource>)dataSource{
-    _dataSource = dataSource;
-    if (self.view != nil){
-        [self assembleTitlesAndPages];
-    }
-}
-
-
 #pragma mark - node actions
 
 - (void)connectNodes{
@@ -550,8 +499,77 @@
 }
 
 
+#pragma mark - update actions
+
+- (void)updateTitleConainerWrapperShadowPath{
+    CGPathRef shadowPath = [UIBezierPath bezierPathWithRect:titleContainerWrapper.bounds].CGPath;
+    [titleContainerWrapper.layer setShadowPath:shadowPath];
+    //rasterize (also due to the better performance)
+    titleContainerWrapper.layer.shouldRasterize = YES;
+    titleContainerWrapper.layer.rasterizationScale = [UIScreen mainScreen].scale;
+}
+
+- (void)updateContentOffset:(CGPoint)contentOffset forScrollView:(UIScrollView *)scrollView{
+    scrollView.delegate = nil;
+    scrollView.contentOffset = contentOffset;
+    scrollView.delegate = self;
+}
+
+- (void)updateTitlesAndPagesPosition{
+    NSLog(@"========== updateTitlesAndPagesPosition =========");
+    //        view.transform = CGAffineTransformIdentity;
+    
+    TTSlidingNode *node = [nodes objectAtIndex:[self pageIndexAtFirstIndex]];
+    //    NSLog(@"pageIndexAtFirstIndex -> %d",[self pageIndexAtFirstIndex]);
+    for (int i=0; i<[self numOfPages]; i++) {
+        UIView *titleV = [node titleView];
+        UIView *pageV = [node pageView];
+        CGPoint titleOrigin = CGPointMake([self titleWidth]*i, 0);
+        CGRect titleFrame;
+        CGPoint pageOrigin = CGPointMake([self pageWidth]*i, 0);
+        CGRect pageFrame;
+        
+        titleFrame.origin = titleOrigin;
+        titleFrame.size = [self titleSize];
+        titleV.frame = titleFrame;
+        
+        pageFrame.origin = pageOrigin;
+        pageFrame.size = [self pageSize];
+        pageV.frame = pageFrame;
+        
+        //        NSLog(@"displayIndex:%d pageIndex:%d titleX:%f   pageX:%f",i,[node pageIndex], titleOrigin.x, pageOrigin.x);
+        
+        node = [node nextNode];
+    }
+    
+    
+    //    NSLog(@"TitleContainer")
+    
+    //    NSLog(@"============================");
+}
+
+- (void)updateScrollContentSize{
+    //    CGFloat topScrollViewContentW = self.numOfPages * self.titleWidth;
+    //    CGFloat topScrollViewContentH = titleC.frame.size.height;
+    titleContainer.contentSize = [self contentSizeOfTitleContainer];
+    
+    //    CGFloat bottomScrollViewContentW = self.numOfPages * self.pageWidth;
+    //    CGFloat bottomScrollViewContentH = pageContainer.frame.size.height;
+    pageContainer.contentSize = [self contentSizeOfPageContainer];
+}
+
+
+
+
 
 #pragma mark - properties
+
+-(void)setDataSource:(id<TTSlidingPagesDataSource>)dataSource{
+    _dataSource = dataSource;
+    if (self.view != nil){
+        [self assembleTitlesAndPages];
+    }
+}
 
 - (CGFloat)contentOffsetXOfPageContainer{
     return [pageContainer contentOffset].x;
@@ -606,7 +624,7 @@
     return 0;
 }
 
-- (int)displayedIndexForScroll{
+- (int)displayedIndexTarget{
     if ([self loop])  return  [self numOfPages]/2;
     return [self displayedPageIndex];
 }
