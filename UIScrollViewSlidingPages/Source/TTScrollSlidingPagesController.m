@@ -32,9 +32,9 @@
 #import "TTSlidingPage.h"
 #import "TTSlidingPageTitle.h"
 #import <QuartzCore/QuartzCore.h>
-#import "TTBlackTriangle.h"
 #import "TTScrollViewWrapper.h"
 #import "TTSlidingNode.h"
+#import "TTArrowView.h"
 
 @interface TTScrollSlidingPagesController (){
     int indexBefore;
@@ -60,13 +60,20 @@
         //set defaults
         self.titleScrollerHeight = 50;
         self.titleScrollerItemWidth = 50;
-        self.titleScrollerBackgroundColour = [UIColor blackColor];
-        self.titleScrollerTextColour = [UIColor whiteColor];
         self.zoomOutAnimationDisabled = NO;
         self.titleFont = [UIFont boldSystemFontOfSize:16];
         self.loop = NO;
        
+        self.titleColor = [UIColor colorWithRed:177.0/255.0 green:167.0/255.0 blue:159.0/255.0 alpha:1.0];
+        self.titleColorSelected = [UIColor colorWithRed:219.0/255.0 green:64.0/255.0 blue:34.0/255.0 alpha:1.0];
         
+        self.titleBackgroundColor = [UIColor whiteColor];
+        self.titleBackgroundColorSelected = [UIColor colorWithWhite:247.0/255.0 alpha:1.0];
+        
+        self.titleScrollerBackgroundColor = [UIColor colorWithWhite:238.0/255.0 alpha:1.0];
+        
+        self.arrowWidth = 16.0;
+        self.arrowHeight = 4.0;
     }
     return self;
 }
@@ -89,7 +96,7 @@
     NSLog(@"========== viewDidLayoutSubviews ==========");
     //this will get called when the screen rotates, at which point we need to fix the frames of all the subviews to be the new correct x position horizontally. The autolayout mask will automatically change the width for us.
 
-    [self updateTitleConainerWrapperShadowPath];
+//    [self updateTitleConainerWrapperShadowPath];
     [self updateTitlesAndPagesPosition];
     [self updateScrollContentSize];
     [self jumpToDisplayedIndexTarget];
@@ -104,12 +111,23 @@
     int nextYPosition = 0;
     [self assembleTopScrollViewWithYPosition:nextYPosition];
     [self assembleTopScrollViewWrapperWithYPosition:nextYPosition];
+    [self assembleArrowViewWithYPosition:nextYPosition];
     nextYPosition += self.titleScrollerHeight;
     [self assembleBottomScrollViewWithYPosition:nextYPosition];
 }
 
+- (void)assembleArrowViewWithYPosition:(CGFloat)yPosition{
+    CGRect frame = CGRectMake(0, [self titleHeight], self.view.frame.size.width, [self arrowHeight]);
+    TTArrowView *arrowV = [[TTArrowView alloc] initWithFrame:frame];
+    [arrowV setTrangleW:[self arrowWidth]];
+    [arrowV setTrangleH:[self arrowHeight]];
+    [arrowV setTrangleColor:[self titleBackgroundColorSelected]];
+    [arrowV setBackgroundColor:[self titleScrollerBackgroundColor]];
+    [[self view] addSubview:arrowV];
+}
+
 - (void)assembleTopScrollViewWithYPosition:(CGFloat)yPosition{
-    titleContainer = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.titleScrollerItemWidth, self.titleScrollerHeight)];
+    titleContainer = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.titleWidth, self.titleHeight)];
     titleContainer.center = CGPointMake(self.view.center.x, titleContainer.center.y); //center it horizontally
     titleContainer.pagingEnabled = YES;
     titleContainer.clipsToBounds = NO;
@@ -120,7 +138,7 @@
     titleContainer.backgroundColor = [UIColor clearColor];
     titleContainer.pagingEnabled = YES;
     titleContainer.delegate = self; //move the bottom scroller proportionally as you drag the top.
-    [titleContainer setBackgroundColor:[UIColor redColor]];
+    [titleContainer setBackgroundColor:[self titleBackgroundColorSelected]];
     
 }
 
@@ -133,15 +151,15 @@
     pageContainer.directionalLockEnabled = YES;
     pageContainer.delegate = self; //move the top scroller proportionally as you drag the bottom.
     pageContainer.alwaysBounceVertical = NO;
-    [pageContainer setBackgroundColor:[UIColor redColor]];
+    [pageContainer setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:pageContainer];
 }
 
 - (void)assembleTopScrollViewWrapperWithYPosition:(CGFloat)yPosition{
     //make the view to put the scroll view inside which will allow the background colour, and allow dragging from anywhere in this wrapper to be passed to the scrollview.
-    titleContainerWrapper = [[TTScrollViewWrapper alloc] initWithFrame:CGRectMake(0, yPosition, self.view.frame.size.width, self.titleScrollerHeight) andUIScrollView:titleContainer];
+    titleContainerWrapper = [[TTScrollViewWrapper alloc] initWithFrame:CGRectMake(0, yPosition, self.view.frame.size.width, self.titleHeight) andUIScrollView:titleContainer];
     titleContainerWrapper.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-    titleContainerWrapper.backgroundColor = [UIColor blueColor];
+    titleContainerWrapper.backgroundColor = [self titleBackgroundColor];
     //pass touch events from the wrapper onto the scrollview (so you can drag from the entire width, as the scrollview itself only lives in the very centre, but with clipToBounds turned off)
     
     //single tap to switch to different item
@@ -154,14 +172,14 @@
     [self.view addSubview:titleContainerWrapper]; //put the wrapper in this view.
     
     //decorate shadow
-    CALayer *l = titleContainerWrapper.layer;
-    l.masksToBounds = NO;
-    l.shadowOffset = CGSizeMake(0, 4);
-    l.shadowRadius = 4;
-    l.shadowOpacity = 0.3;
+//    CALayer *l = titleContainerWrapper.layer;
+//    l.masksToBounds = NO;
+//    l.shadowOffset = CGSizeMake(0, 4);
+//    l.shadowRadius = 4;
+//    l.shadowOpacity = 0.3;
     
     //Add shadow path (better performance)
-    [self updateTitleConainerWrapperShadowPath];
+//    [self updateTitleConainerWrapperShadowPath];
     
     [self.view bringSubviewToFront:titleContainerWrapper];//bring view to sit on top so you can see the shadow!
 }
@@ -189,9 +207,9 @@
     UILabel *label = [[UILabel alloc] init];
     label.text = title.headerText;
     label.textAlignment = NSTextAlignmentCenter;
-    label.textColor = self.titleScrollerTextColour;
     label.font = self.titleFont;
     label.backgroundColor = [UIColor clearColor];
+    label.textColor = self.titleColor;
     
     [titleContainer addSubview:label];
     return label;
@@ -384,6 +402,8 @@
 - (void)didScrollToIndex:(int)index{
     NSLog(@"didScrollToIndex -> %d indexBefore->%d", index, indexBefore);
     indexBefore = [self displayedIndexCurrent];
+    
+    [self updateTitlesColor];
 }
 
 - (void)willJumpToIndex:(int)index{
@@ -394,6 +414,8 @@
 - (void)didJumpToIndex:(int)index{
     NSLog(@"didJumpToIndex -> %d indexBefore->%d", index, indexBefore);
     indexBefore = [self displayedIndexCurrent];
+    
+    [self updateTitlesColor];
 }
 
 
@@ -501,13 +523,13 @@
 
 #pragma mark - update actions
 
-- (void)updateTitleConainerWrapperShadowPath{
-    CGPathRef shadowPath = [UIBezierPath bezierPathWithRect:titleContainerWrapper.bounds].CGPath;
-    [titleContainerWrapper.layer setShadowPath:shadowPath];
-    //rasterize (also due to the better performance)
-    titleContainerWrapper.layer.shouldRasterize = YES;
-    titleContainerWrapper.layer.rasterizationScale = [UIScreen mainScreen].scale;
-}
+//- (void)updateTitleConainerWrapperShadowPath{
+//    CGPathRef shadowPath = [UIBezierPath bezierPathWithRect:titleContainerWrapper.bounds].CGPath;
+//    [titleContainerWrapper.layer setShadowPath:shadowPath];
+//    //rasterize (also due to the better performance)
+//    titleContainerWrapper.layer.shouldRasterize = YES;
+//    titleContainerWrapper.layer.rasterizationScale = [UIScreen mainScreen].scale;
+//}
 
 - (void)updateContentOffset:(CGPoint)contentOffset forScrollView:(UIScrollView *)scrollView{
     scrollView.delegate = nil;
@@ -558,7 +580,20 @@
     pageContainer.contentSize = [self contentSizeOfPageContainer];
 }
 
-
+- (void)updateTitlesColor{
+    int pageIndex = [self displayedPageIndex];
+    for (int i=0; i<[nodes count]; i++) {
+        TTSlidingNode *node = [nodes objectAtIndex:i];
+        UILabel *displayedTitleLabel = (UILabel *)[node titleView];
+        UIColor *c = [self titleColor];
+        
+        if (pageIndex == i) {
+            c = [self titleColorSelected];
+        }
+        
+        [displayedTitleLabel setTextColor:c];
+    }
+}
 
 
 
@@ -608,11 +643,11 @@
 }
 
 - (CGFloat)titleWidth{
-    return titleContainer.frame.size.width;
+    return [self titleScrollerItemWidth];
 }
 
 - (CGFloat)titleHeight{
-    return titleContainer.frame.size.height;
+    return [self titleScrollerHeight] - [self arrowHeight];
 }
 
 - (int)numOfPages{

@@ -42,9 +42,15 @@
 @property (nonatomic, assign) BOOL loop;    //loop title & page
 @property (nonatomic) bool zoomOutAnimationDisabled;
 @property (nonatomic, strong) UIFont *titleFont;
-@property (nonatomic) int titleScrollerHeight;
-@property (nonatomic) int titleScrollerItemWidth;
-@property (nonatomic, strong) UIColor *titleScrollerBackgroundColour;
-@property (nonatomic, strong) UIColor *titleScrollerTextColour;
+@property (nonatomic, strong) UIColor *titleColor;
+@property (nonatomic, strong) UIColor *titleColorSelected;
+@property (nonatomic, assign) CGFloat titleScrollerHeight;
+@property (nonatomic, assign) CGFloat titleScrollerItemWidth;
+@property (nonatomic, strong) UIColor *titleScrollerBackgroundColor;
+@property (nonatomic, strong) UIColor *titleBackgroundColor;
+@property (nonatomic, strong) UIColor *titleBackgroundColorSelected;
+
+@property (nonatomic, assign) CGFloat arrowWidth;
+@property (nonatomic, assign) CGFloat arrowHeight;
 
 @end
