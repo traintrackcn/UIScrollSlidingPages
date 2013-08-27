@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TTArrowView : UIView
+@interface TTTrangleView : UIView
 
 @property (nonatomic, assign) CGFloat trangleW;
 @property (nonatomic, assign) CGFloat trangleH;

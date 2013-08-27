@@ -46,7 +46,7 @@
 @property (nonatomic, strong) UIColor *titleColorSelected;
 @property (nonatomic, assign) CGFloat titleScrollerHeight;
 @property (nonatomic, assign) CGFloat titleScrollerItemWidth;
-@property (nonatomic, strong) UIColor *titleScrollerBackgroundColor;
+//@property (nonatomic, strong) UIColor *titleScrollerBackgroundColor;
 @property (nonatomic, strong) UIColor *titleBackgroundColor;
 @property (nonatomic, strong) UIColor *titleBackgroundColorSelected;
 

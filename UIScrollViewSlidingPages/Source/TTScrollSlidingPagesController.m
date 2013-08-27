@@ -34,7 +34,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "TTScrollViewWrapper.h"
 #import "TTSlidingNode.h"
-#import "TTArrowView.h"
+#import "TTTrangleView.h"
 
 @interface TTScrollSlidingPagesController (){
     int indexBefore;
@@ -70,7 +70,7 @@
         self.titleBackgroundColor = [UIColor whiteColor];
         self.titleBackgroundColorSelected = [UIColor colorWithWhite:247.0/255.0 alpha:1.0];
         
-        self.titleScrollerBackgroundColor = [UIColor colorWithWhite:238.0/255.0 alpha:1.0];
+//        self.titleScrollerBackgroundColor = [UIColor colorWithWhite:238.0/255.0 alpha:1.0];
         
         self.arrowWidth = 16.0;
         self.arrowHeight = 4.0;
@@ -111,19 +111,20 @@
     int nextYPosition = 0;
     [self assembleTopScrollViewWithYPosition:nextYPosition];
     [self assembleTopScrollViewWrapperWithYPosition:nextYPosition];
-    [self assembleArrowViewWithYPosition:nextYPosition];
-    nextYPosition += self.titleScrollerHeight;
+    
+    nextYPosition += self.titleHeight;
     [self assembleBottomScrollViewWithYPosition:nextYPosition];
+    
+    [self assembleArrowView];
 }
 
-- (void)assembleArrowViewWithYPosition:(CGFloat)yPosition{
+- (void)assembleArrowView{
     CGRect frame = CGRectMake(0, [self titleHeight], self.view.frame.size.width, [self arrowHeight]);
-    TTArrowView *arrowV = [[TTArrowView alloc] initWithFrame:frame];
-    [arrowV setTrangleW:[self arrowWidth]];
-    [arrowV setTrangleH:[self arrowHeight]];
-    [arrowV setTrangleColor:[self titleBackgroundColorSelected]];
-    [arrowV setBackgroundColor:[self titleScrollerBackgroundColor]];
-    [[self view] addSubview:arrowV];
+    TTTrangleView *v = [[TTTrangleView alloc] initWithFrame:frame];
+    [v setTrangleW:[self arrowWidth]];
+    [v setTrangleH:[self arrowHeight]];
+    [v setTrangleColor:[self titleBackgroundColorSelected]];
+    [[self view] addSubview:v];
 }
 
 - (void)assembleTopScrollViewWithYPosition:(CGFloat)yPosition{

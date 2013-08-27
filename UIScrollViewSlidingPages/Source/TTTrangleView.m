@@ -6,9 +6,9 @@
 //  Copyright (c) 2013年 Thomas Thorpe. All rights reserved.
 //
 
-#import "TTArrowView.h"
+#import "TTTrangleView.h"
 
-@implementation TTArrowView
+@implementation TTTrangleView
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -20,8 +20,15 @@
 }
 
 
+- (void)willMoveToSuperview:(UIView *)newSuperview{
+    if (newSuperview) {
+        [self setBackgroundColor:[UIColor clearColor]];
+    }
+}
+
 - (void)drawRect:(CGRect)rect
 {
+    [super drawRect:rect];
     // Drawing code
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     CGSize s = rect.size;
