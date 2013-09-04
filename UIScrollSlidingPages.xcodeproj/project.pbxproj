@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		4A82043B17C2020500FC6D04 /* TTSlidingNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A82043A17C2020500FC6D04 /* TTSlidingNode.m */; };
 		4A87B37917CC332D00172957 /* TTTrangleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A87B37817CC332D00172957 /* TTTrangleView.m */; };
+		4A881F1C17D6BC4C00F3A28A /* TTPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A881F1B17D6BC4C00F3A28A /* TTPageControl.m */; };
+		4A881F1F17D6C86000F3A28A /* TTPageDot.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A881F1E17D6C86000F3A28A /* TTPageDot.m */; };
+		4A881F2117D6E59D00F3A28A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A881F2017D6E59D00F3A28A /* QuartzCore.framework */; };
+		4A881F2417D6E81600F3A28A /* TTAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A881F2317D6E81600F3A28A /* TTAnimation.m */; };
 		4A97404F17C2F13700AB9517 /* TTBlankViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A97404D17C2F13700AB9517 /* TTBlankViewController.m */; };
 		4A97405017C2F13700AB9517 /* TTBlankViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A97404E17C2F13700AB9517 /* TTBlankViewController.xib */; };
 		9F2035E61706475B00438E50 /* diagmonds.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F2035E31706475B00438E50 /* diagmonds.png */; };
@@ -43,6 +47,13 @@
 		4A82043A17C2020500FC6D04 /* TTSlidingNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTSlidingNode.m; sourceTree = "<group>"; };
 		4A87B37717CC332D00172957 /* TTTrangleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTrangleView.h; sourceTree = "<group>"; };
 		4A87B37817CC332D00172957 /* TTTrangleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTrangleView.m; sourceTree = "<group>"; };
+		4A881F1A17D6BC4C00F3A28A /* TTPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPageControl.h; sourceTree = "<group>"; };
+		4A881F1B17D6BC4C00F3A28A /* TTPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPageControl.m; sourceTree = "<group>"; };
+		4A881F1D17D6C86000F3A28A /* TTPageDot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPageDot.h; sourceTree = "<group>"; };
+		4A881F1E17D6C86000F3A28A /* TTPageDot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPageDot.m; sourceTree = "<group>"; };
+		4A881F2017D6E59D00F3A28A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		4A881F2217D6E81600F3A28A /* TTAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTAnimation.h; sourceTree = "<group>"; };
+		4A881F2317D6E81600F3A28A /* TTAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTAnimation.m; sourceTree = "<group>"; };
 		4A97404C17C2F13700AB9517 /* TTBlankViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTBlankViewController.h; sourceTree = "<group>"; };
 		4A97404D17C2F13700AB9517 /* TTBlankViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTBlankViewController.m; sourceTree = "<group>"; };
 		4A97404E17C2F13700AB9517 /* TTBlankViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTBlankViewController.xib; sourceTree = "<group>"; };
@@ -91,6 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A881F2117D6E59D00F3A28A /* QuartzCore.framework in Frameworks */,
 				9F70248A16DBF6650003B5FA /* UIKit.framework in Frameworks */,
 				9F70248C16DBF6650003B5FA /* Foundation.framework in Frameworks */,
 				9F70248E16DBF6650003B5FA /* CoreGraphics.framework in Frameworks */,
@@ -129,6 +141,7 @@
 		9F70247D16DBF6650003B5FA = {
 			isa = PBXGroup;
 			children = (
+				4A881F2017D6E59D00F3A28A /* QuartzCore.framework */,
 				9F70248F16DBF6650003B5FA /* UIScrollViewSlidingPages */,
 				9F70248816DBF6650003B5FA /* Frameworks */,
 				9F70248716DBF6650003B5FA /* Products */,
@@ -181,6 +194,8 @@
 		9F7024C016DBF6C00003B5FA /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				4A881F2217D6E81600F3A28A /* TTAnimation.h */,
+				4A881F2317D6E81600F3A28A /* TTAnimation.m */,
 				9F2035E11706475B00438E50 /* Images */,
 				9F9B9B9F17037C0B00CD45B4 /* TTScrollSlidingPagesController.h */,
 				9F9B9BA017037C0B00CD45B4 /* TTScrollSlidingPagesController.m */,
@@ -195,6 +210,10 @@
 				4A82043A17C2020500FC6D04 /* TTSlidingNode.m */,
 				4A87B37717CC332D00172957 /* TTTrangleView.h */,
 				4A87B37817CC332D00172957 /* TTTrangleView.m */,
+				4A881F1A17D6BC4C00F3A28A /* TTPageControl.h */,
+				4A881F1B17D6BC4C00F3A28A /* TTPageControl.m */,
+				4A881F1D17D6C86000F3A28A /* TTPageDot.h */,
+				4A881F1E17D6C86000F3A28A /* TTPageDot.m */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -328,6 +347,9 @@
 				4A82043B17C2020500FC6D04 /* TTSlidingNode.m in Sources */,
 				4A97404F17C2F13700AB9517 /* TTBlankViewController.m in Sources */,
 				4A87B37917CC332D00172957 /* TTTrangleView.m in Sources */,
+				4A881F1C17D6BC4C00F3A28A /* TTPageControl.m in Sources */,
+				4A881F1F17D6C86000F3A28A /* TTPageDot.m in Sources */,
+				4A881F2417D6E81600F3A28A /* TTAnimation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

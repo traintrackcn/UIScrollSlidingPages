@@ -43,6 +43,8 @@
     TTScrollViewWrapper *titleContainerWrapper;
     UIScrollView *titleContainer;
     UIScrollView *pageContainer;
+    TTPageControl *pageControl;
+    CGFloat pageControlHeight;
 }
 
 @end
@@ -74,6 +76,8 @@
         
         self.arrowWidth = 16.0;
         self.arrowHeight = 4.0;
+        
+        pageControlHeight = 20.0;
     }
     return self;
 }
@@ -109,23 +113,41 @@
 - (void)assemble{
     viewDidLoadHasBeenCalled = YES;
     int nextYPosition = 0;
+    
+    [self assemblePageControlWithYPosition:nextYPosition];
+    nextYPosition += pageControlHeight;
+    
     [self assembleTopScrollViewWithYPosition:nextYPosition];
     [self assembleTopScrollViewWrapperWithYPosition:nextYPosition];
-    
     nextYPosition += self.titleHeight;
+    
     [self assembleBottomScrollViewWithYPosition:nextYPosition];
     
-    [self assembleArrowView];
+    [self assembleArrowViewWithYPosition:nextYPosition];
 }
 
-- (void)assembleArrowView{
-    CGRect frame = CGRectMake(0, [self titleHeight], self.view.frame.size.width, [self arrowHeight]);
+- (void)assembleArrowViewWithYPosition:(CGFloat)yPosition{
+    CGRect frame = CGRectMake(0, yPosition, self.view.frame.size.width, [self arrowHeight]);
     TTTrangleView *v = [[TTTrangleView alloc] initWithFrame:frame];
     [v setTrangleW:[self arrowWidth]];
     [v setTrangleH:[self arrowHeight]];
     [v setTrangleColor:[self titleBackgroundColorSelected]];
     [[self view] addSubview:v];
 }
+
+- (void)assemblePageControlWithYPosition:(CGFloat)yPosition{
+    //create and add the UIPageControl
+    pageControl = [[TTPageControl alloc] initWithFrame:CGRectMake(0, yPosition, self.view.frame.size.width, pageControlHeight)];
+    pageControl.backgroundColor = [UIColor whiteColor];
+    pageControl.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    [pageControl setDelegate:self];
+//    [pageControl addTarget:self action:@selector(didTapPageControl:) forControlEvents:UIControlEventValueChanged];
+    pageControl.titles = [self titles];
+    pageControl.currentIndex = [self displayedIndexTarget];
+    [self.view addSubview:pageControl];
+}
+
+
 
 - (void)assembleTopScrollViewWithYPosition:(CGFloat)yPosition{
     titleContainer = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.titleWidth, self.titleHeight)];
@@ -200,8 +222,13 @@
     }
 }
 
+
+
+
+
 - (UIView *)assembleTitleViewForIndex:(int)index{
-    TTSlidingPageTitle *title = [self.dataSource titleForSlidingPagesViewController:self atIndex:index];
+    NSString *titleText = [self titleForIndex:index];
+    TTSlidingPageTitle *title =  [[TTSlidingPageTitle alloc] initWithHeaderText:titleText];
     if (title == nil) return [[UIView alloc] init];
     if (![title isKindOfClass:[TTSlidingPageTitle class]]) return [[UIView alloc] init];
     
@@ -405,6 +432,7 @@
     indexBefore = [self displayedIndexCurrent];
     
     [self updateTitlesColor];
+    [self updatePageControl];
 }
 
 - (void)willJumpToIndex:(int)index{
@@ -417,6 +445,7 @@
     indexBefore = [self displayedIndexCurrent];
     
     [self updateTitlesColor];
+    [self updatePageControl];
 }
 
 
@@ -424,37 +453,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     int currentIndex = [self displayedIndexCurrent];
-//    NSLog(@"scrollView -> %@", scrollView);
-    
-//    if (!self.zoomOutAnimationDisabled){
-//        //Do a zoom out effect on the current view and next view depending on the amount scrolled
-//        double minimumZoom = 0.93;
-//        double zoomSpeed = 1000;//increase this number to slow down the zoom
-//        UIView *currentView = [bottomScrollView.subviews objectAtIndex:currentPage];
-//        UIView *nextView;
-//        if (currentPage < [bottomScrollView.subviews count]-1){
-//            nextView = [bottomScrollView.subviews objectAtIndex:currentPage+1];
-//        }
-//        
-//        //currentView zooms out as scroll left
-//        int distanceFromPageOrigin = bottomScrollView.contentOffset.x - [self getXPositionOfPage:currentPage]; //find out how far the scroll is away from the start of the page, and use this to adjust the transform of the currentView
-//        if (distanceFromPageOrigin < 0) {distanceFromPageOrigin = 0;}
-//        double scaleAmount = 1-(distanceFromPageOrigin/zoomSpeed);
-//        if (scaleAmount < minimumZoom ){scaleAmount = minimumZoom;}
-//        currentView.transform = CGAffineTransformScale(CGAffineTransformIdentity, scaleAmount, scaleAmount);
-//        
-//        //nextView zooms in as scroll left
-//        if (nextView != nil){
-//            //find out how far the scroll is away from the start of the next page, and use this to adjust the transform of the nextView
-//            distanceFromPageOrigin = (bottomScrollView.contentOffset.x - [self getXPositionOfPage:currentPage+1]) * -1;//multiply by minus 1 to get the distance to the next page (because otherwise the result would be -300 for example, as in 300 away from the next page)
-//            if (distanceFromPageOrigin < 0) {distanceFromPageOrigin = 0;}
-//            scaleAmount = 1-(distanceFromPageOrigin/zoomSpeed);
-//            if (scaleAmount < minimumZoom ){scaleAmount = minimumZoom;}
-//            nextView.transform = CGAffineTransformScale(CGAffineTransformIdentity, scaleAmount, scaleAmount);
-//        }
-//    }
-    
-    
+
     if (scrollView == titleContainer){
         //translate the top scroll to the bottom scroll
         
@@ -596,6 +595,9 @@
     }
 }
 
+- (void)updatePageControl{
+    [pageControl setCurrentIndex:[self displayedIndexCurrent]];
+}
 
 
 #pragma mark - properties
@@ -605,6 +607,13 @@
     if (self.view != nil){
         [self assembleTitlesAndPages];
     }
+}
+
+- (NSString *)titleForIndex:(NSInteger)index{
+    NSArray *arr = self.titles;
+//    NSLog(@"arr -> %@", arr);
+    if(arr) return [arr objectAtIndex:index];
+    return  [NSString stringWithFormat:@"%d",index];
 }
 
 - (CGFloat)contentOffsetXOfPageContainer{
@@ -652,7 +661,8 @@
 }
 
 - (int)numOfPages{
-     return [self.dataSource numberOfPagesForSlidingPagesViewController:self];
+//    NSLog(@"titles -> %@", self.titles);
+     return [self.titles count];
 }
 
 - (int)offsetBeforeDisplayedPageIndex{
@@ -707,5 +717,15 @@
     return  node;
 }
 
+
+#pragma mark - TTPageControlDelegate
+
+- (void)pageControlDidChangeIndex:(int)index{
+    int targetIdx = index;
+    NSLog(@"========== pageControlDidChangeIndex targetIdx -> %d ==========", targetIdx);
+    if ([self displayedIndexCurrent] != targetIdx){
+        [self scrollToIndex:targetIdx];
+    }
+}
 
 @end

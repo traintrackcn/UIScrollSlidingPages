@@ -30,9 +30,10 @@
 
 #import <UIKit/UIKit.h>
 #import "TTSlidingPagesDataSource.h"
+#import "TTPageControl.h"
 @class TTScrollViewWrapper;
 
-@interface TTScrollSlidingPagesController : UIViewController<UIScrollViewDelegate>
+@interface TTScrollSlidingPagesController : UIViewController<UIScrollViewDelegate, TTPageControlDelegate>
 
 
 @property (nonatomic, assign) int displayedPageIndex; // Default is 0.
@@ -46,11 +47,11 @@
 @property (nonatomic, strong) UIColor *titleColorSelected;
 @property (nonatomic, assign) CGFloat titleScrollerHeight;
 @property (nonatomic, assign) CGFloat titleScrollerItemWidth;
-//@property (nonatomic, strong) UIColor *titleScrollerBackgroundColor;
 @property (nonatomic, strong) UIColor *titleBackgroundColor;
 @property (nonatomic, strong) UIColor *titleBackgroundColorSelected;
 
 @property (nonatomic, assign) CGFloat arrowWidth;
 @property (nonatomic, assign) CGFloat arrowHeight;
+@property (nonatomic, strong) NSArray *titles;
 
 @end

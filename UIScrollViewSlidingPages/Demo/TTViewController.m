@@ -35,20 +35,20 @@
     
     //initial setup of the TTScrollSlidingPagesController. 
     self.slider = [[TTScrollSlidingPagesController alloc] init];
-
+    self.slider.titles = [NSArray arrayWithObjects:@"P0",@"P1",@"P2",@"P3",@"P4",@"P5",@"P6",@"P7",@"P8",@"P9",@"P10", nil];
 
     
     //set properties to customiser the slider. Make sure you set these BEFORE you access any other properties on the slider, such as the view or the datasource. Best to do it immediately after calling the init method.
     //slider.titleScrollerHidden = YES;
-self.slider.titleScrollerHeight = 48.0;
-self.slider.titleScrollerItemWidth = 108.0;
+    self.slider.titleScrollerHeight = 48.0;
+    self.slider.titleScrollerItemWidth = 60.0;
     //slider.titleScrollerBackgroundColour = [UIColor darkGrayColor];
     //slider.disableTitleScrollerShadow = YES;
     //slider.disableUIPageControl = YES;
     //slider.initialPageNumber = 1;
     //slider.pagingEnabled = NO;
     //slider.zoomOutAnimationDisabled = YES;
-    self.slider.loop = YES;
+    self.slider.loop = NO;
     //set the datasource.
     self.slider.dataSource = self;
     
@@ -67,9 +67,6 @@ self.slider.titleScrollerItemWidth = 108.0;
 }
 
 #pragma mark TTSlidingPagesDataSource methods
--(int)numberOfPagesForSlidingPagesViewController:(TTScrollSlidingPagesController *)source{
-    return 5; //just return 7 pages as an example
-}
 
 -(TTSlidingPage *)pageForSlidingPagesViewController:(TTScrollSlidingPagesController*)source atIndex:(int)index{
     TTBlankViewController *vc = [[TTBlankViewController alloc] initWithNibName:@"TTBlankViewController" bundle:nil];
@@ -80,18 +77,18 @@ self.slider.titleScrollerItemWidth = 108.0;
     return [[TTSlidingPage alloc] initWithContentViewController:vc];
 }
 
--(TTSlidingPageTitle *)titleForSlidingPagesViewController:(TTScrollSlidingPagesController *)source atIndex:(int)index{
-    TTSlidingPageTitle *title;
-
-    //all other pages just use a simple text header
-    switch (index) {
-        default:
-            title = [[TTSlidingPageTitle alloc] initWithHeaderText:[NSString stringWithFormat:@"P %d", index]];
-            break;
-    }
- 
-    return title;
-}
+//-(TTSlidingPageTitle *)titleForSlidingPagesViewController:(TTScrollSlidingPagesController *)source atIndex:(int)index{
+//    TTSlidingPageTitle *title;
+//
+//    //all other pages just use a simple text header
+//    switch (index) {
+//        default:
+//            title = [[TTSlidingPageTitle alloc] initWithHeaderText:[NSString stringWithFormat:@"P %d", index]];
+//            break;
+//    }
+// 
+//    return title;
+//}
 
 ////The below method in the datasource might get removed from the control some time in the future as it doesn't work that well with the headers if the width is small.
 //-(int)widthForPageOnSlidingPagesViewController:(TTScrollSlidingPagesController *)source atIndex:(int)index
