@@ -49,6 +49,7 @@
     //slider.pagingEnabled = NO;
     //slider.zoomOutAnimationDisabled = YES;
     self.slider.loop = NO;
+    self.slider.pageControlMode = YES;
     //set the datasource.
     self.slider.dataSource = self;
     

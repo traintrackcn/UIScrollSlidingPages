@@ -114,16 +114,18 @@
     viewDidLoadHasBeenCalled = YES;
     int nextYPosition = 0;
     
-    [self assemblePageControlWithYPosition:nextYPosition];
-    nextYPosition += pageControlHeight;
+    if (self.pageControlMode) {
+        [self assemblePageControlWithYPosition:nextYPosition];
+        nextYPosition += pageControlHeight;
+        [self assembleBottomScrollViewWithYPosition:nextYPosition];
+    }else{
+        [self assembleTopScrollViewWithYPosition:nextYPosition];
+        [self assembleTopScrollViewWrapperWithYPosition:nextYPosition];
+        nextYPosition += self.titleHeight;
+        [self assembleBottomScrollViewWithYPosition:nextYPosition];
+        [self assembleArrowViewWithYPosition:nextYPosition];
+    }
     
-    [self assembleTopScrollViewWithYPosition:nextYPosition];
-    [self assembleTopScrollViewWrapperWithYPosition:nextYPosition];
-    nextYPosition += self.titleHeight;
-    
-    [self assembleBottomScrollViewWithYPosition:nextYPosition];
-    
-    [self assembleArrowViewWithYPosition:nextYPosition];
 }
 
 - (void)assembleArrowViewWithYPosition:(CGFloat)yPosition{

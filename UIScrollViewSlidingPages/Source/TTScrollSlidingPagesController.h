@@ -41,6 +41,8 @@
 
 //styles
 @property (nonatomic, assign) BOOL loop;    //loop title & page
+@property (nonatomic, assign) BOOL pageControlMode;
+
 @property (nonatomic) bool zoomOutAnimationDisabled;
 @property (nonatomic, strong) UIFont *titleFont;
 @property (nonatomic, strong) UIColor *titleColor;
@@ -49,9 +51,10 @@
 @property (nonatomic, assign) CGFloat titleScrollerItemWidth;
 @property (nonatomic, strong) UIColor *titleBackgroundColor;
 @property (nonatomic, strong) UIColor *titleBackgroundColorSelected;
-
 @property (nonatomic, assign) CGFloat arrowWidth;
 @property (nonatomic, assign) CGFloat arrowHeight;
 @property (nonatomic, strong) NSArray *titles;
+
+
 
 @end
