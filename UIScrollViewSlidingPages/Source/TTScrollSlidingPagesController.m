@@ -237,6 +237,7 @@
     UILabel *label = [[UILabel alloc] init];
     label.text = title.headerText;
     label.textAlignment = NSTextAlignmentCenter;
+    label.adjustsFontSizeToFitWidth = YES;
     label.font = self.titleFont;
     label.backgroundColor = [UIColor clearColor];
     label.textColor = self.titleColor;

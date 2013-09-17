@@ -35,7 +35,7 @@
     
     //initial setup of the TTScrollSlidingPagesController. 
     self.slider = [[TTScrollSlidingPagesController alloc] init];
-    self.slider.titles = [NSArray arrayWithObjects:@"P0",@"P1",@"P2",@"P3",@"P4",@"P5",@"P6",@"P7",@"P8",@"P9",@"P10", nil];
+    self.slider.titles = [NSArray arrayWithObjects:@"P0",@"Paaaaaaaa1",@"P2",@"P3",@"P4",@"P5",@"P6",@"P7",@"P8",@"P9",@"P10", nil];
 
     
     //set properties to customiser the slider. Make sure you set these BEFORE you access any other properties on the slider, such as the view or the datasource. Best to do it immediately after calling the init method.
@@ -49,7 +49,7 @@
     //slider.pagingEnabled = NO;
     //slider.zoomOutAnimationDisabled = YES;
     self.slider.loop = NO;
-    self.slider.pageControlMode = YES;
+    self.slider.pageControlMode = NO;
     //set the datasource.
     self.slider.dataSource = self;
     
