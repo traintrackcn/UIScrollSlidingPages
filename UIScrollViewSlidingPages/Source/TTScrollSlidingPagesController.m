@@ -233,7 +233,17 @@
     TTSlidingPageTitle *title =  [[TTSlidingPageTitle alloc] initWithHeaderText:titleText];
     if (title == nil) return [[UIView alloc] init];
     if (![title isKindOfClass:[TTSlidingPageTitle class]]) return [[UIView alloc] init];
-    
+    UIView *titleView;
+    if (self.titleAsImageMode) {
+        titleView = [self assembleTitleViewAsImageForTitle:title];
+    }else{
+        titleView = [self assembleTitleViewAsLabelForTitle:title];
+    }
+    [titleContainer addSubview:titleView];
+    return titleView;
+}
+
+- (UIView *)assembleTitleViewAsLabelForTitle:(TTSlidingPageTitle *)title{
     UILabel *label = [[UILabel alloc] init];
     label.text = title.headerText;
     label.textAlignment = NSTextAlignmentCenter;
@@ -242,8 +252,21 @@
     label.backgroundColor = [UIColor clearColor];
     label.textColor = self.titleColor;
     
-    [titleContainer addSubview:label];
     return label;
+}
+
+- (UIView *)assembleTitleViewAsImageForTitle:(TTSlidingPageTitle *)title{
+    UIImageView *imgV = [[UIImageView alloc] init];
+    UIImage *img = [UIImage imageNamed:title.headerText];
+    [imgV setContentMode:UIViewContentModeScaleAspectFit];
+    [imgV setImage:img];
+    
+//    CALayer *l = [imgV layer];
+//    [l setBorderWidth:1.0];
+//    [l setBorderColor:[UIColor blackColor].CGColor];
+//    [l setCornerRadius:5.0];
+    
+    return imgV;
 }
 
 - (UIView *)assemblePageViewForIndex:(int)index{
@@ -434,7 +457,7 @@
     NSLog(@"didScrollToIndex -> %d indexBefore->%d", index, indexBefore);
     indexBefore = [self displayedIndexCurrent];
     
-    [self updateTitlesColor];
+    [self updateTitles];
     [self updatePageControl];
 }
 
@@ -447,7 +470,7 @@
     NSLog(@"didJumpToIndex -> %d indexBefore->%d", index, indexBefore);
     indexBefore = [self displayedIndexCurrent];
     
-    [self updateTitlesColor];
+    [self updateTitles];
     [self updatePageControl];
 }
 
@@ -583,7 +606,29 @@
     pageContainer.contentSize = [self contentSizeOfPageContainer];
 }
 
-- (void)updateTitlesColor{
+
+- (void)updateTitles{
+    if (self.titleAsImageMode) {
+        [self updateTitlesAlpha];
+    }else{
+        [self updateTitlesTextColor];
+    }
+}
+
+- (void)updateTitlesAlpha{
+    int pageIndex = [self displayedPageIndex];
+    for (int i=0; i<[nodes count]; i++) {
+        TTSlidingNode *node = [nodes objectAtIndex:i];
+        UIImageView *displayedTitleView = (UIImageView *)[node titleView];
+        CGFloat alpha = 0.3;
+        
+        if (pageIndex == i) alpha = 1.0;
+        
+        [displayedTitleView setAlpha:alpha];
+    }
+}
+
+- (void)updateTitlesTextColor{
     int pageIndex = [self displayedPageIndex];
     for (int i=0; i<[nodes count]; i++) {
         TTSlidingNode *node = [nodes objectAtIndex:i];

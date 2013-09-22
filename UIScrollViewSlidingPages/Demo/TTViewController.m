@@ -35,13 +35,14 @@
     
     //initial setup of the TTScrollSlidingPagesController. 
     self.slider = [[TTScrollSlidingPagesController alloc] init];
-    self.slider.titles = [NSArray arrayWithObjects:@"P0",@"Paaaaaaaa1",@"P2",@"P3",@"P4",@"P5",@"P6",@"P7",@"P8",@"P9",@"P10", nil];
+    self.slider.titles = [NSArray arrayWithObjects:@"AD",@"AE",@"AF",@"AG",@"US",@"CN",@"TW",@"FR",@"ES",@"HK",@"JP", nil];
 
     
     //set properties to customiser the slider. Make sure you set these BEFORE you access any other properties on the slider, such as the view or the datasource. Best to do it immediately after calling the init method.
     //slider.titleScrollerHidden = YES;
     self.slider.titleScrollerHeight = 48.0;
-    self.slider.titleScrollerItemWidth = 60.0;
+    self.slider.titleScrollerItemWidth = 64.0;
+    self.slider.titleAsImageMode = YES;
     //slider.titleScrollerBackgroundColour = [UIColor darkGrayColor];
     //slider.disableTitleScrollerShadow = YES;
     //slider.disableUIPageControl = YES;

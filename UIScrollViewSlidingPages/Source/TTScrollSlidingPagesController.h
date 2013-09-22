@@ -42,6 +42,7 @@
 //styles
 @property (nonatomic, assign) BOOL loop;    //loop title & page
 @property (nonatomic, assign) BOOL pageControlMode;
+@property (nonatomic, assign) BOOL titleAsImageMode;
 
 @property (nonatomic) bool zoomOutAnimationDisabled;
 @property (nonatomic, strong) UIFont *titleFont;
