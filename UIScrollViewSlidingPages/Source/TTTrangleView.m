@@ -26,9 +26,17 @@
     }
 }
 
+- (void)layoutSubviews{
+    [super layoutSubviews];
+//    NSLog(@"layoutSubviews");
+}
+
 - (void)drawRect:(CGRect)rect
 {
     [super drawRect:rect];
+    
+    NSLog(@"draw rect w %f h %f", rect.size.width, rect.size.height);
+    
     // Drawing code
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     CGSize s = rect.size;

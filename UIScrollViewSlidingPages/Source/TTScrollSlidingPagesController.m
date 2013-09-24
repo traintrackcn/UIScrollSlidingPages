@@ -45,6 +45,8 @@
     UIScrollView *pageContainer;
     TTPageControl *pageControl;
     CGFloat pageControlHeight;
+    
+    TTTrangleView *trangleView;
 }
 
 @end
@@ -103,6 +105,7 @@
 //    [self updateTitleConainerWrapperShadowPath];
     [self updateTitlesAndPagesPosition];
     [self updateScrollContentSize];
+    [self updateTrangleView];
     [self jumpToDisplayedIndexTarget];
 }
 
@@ -129,12 +132,14 @@
 }
 
 - (void)assembleArrowViewWithYPosition:(CGFloat)yPosition{
+    if (trangleView != nil) return;
     CGRect frame = CGRectMake(0, yPosition, self.view.frame.size.width, [self arrowHeight]);
-    TTTrangleView *v = [[TTTrangleView alloc] initWithFrame:frame];
-    [v setTrangleW:[self arrowWidth]];
-    [v setTrangleH:[self arrowHeight]];
-    [v setTrangleColor:[self titleBackgroundColorSelected]];
-    [[self view] addSubview:v];
+    trangleView = [[TTTrangleView alloc] initWithFrame:frame];
+//    NSLog(@"trangle width -> %f", self.view.frame.size.width);
+    [trangleView setTrangleW:[self arrowWidth]];
+    [trangleView setTrangleH:[self arrowHeight]];
+    [trangleView setTrangleColor:[self titleBackgroundColorSelected]];
+    [[self view] addSubview:trangleView];
 }
 
 - (void)assemblePageControlWithYPosition:(CGFloat)yPosition{
@@ -556,6 +561,13 @@
 //    titleContainerWrapper.layer.shouldRasterize = YES;
 //    titleContainerWrapper.layer.rasterizationScale = [UIScreen mainScreen].scale;
 //}
+
+- (void)updateTrangleView{
+    CGRect frame = trangleView.frame;
+    frame.size = CGSizeMake(self.view.frame.size.width, frame.size.height);
+    [trangleView setFrame:frame];
+    [trangleView setNeedsDisplay];
+}
 
 - (void)updateContentOffset:(CGPoint)contentOffset forScrollView:(UIScrollView *)scrollView{
     scrollView.delegate = nil;
