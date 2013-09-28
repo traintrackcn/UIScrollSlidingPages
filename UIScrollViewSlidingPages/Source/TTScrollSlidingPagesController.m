@@ -134,7 +134,7 @@
 
 - (void)assembleArrowViewWithYPosition:(CGFloat)yPosition{
     if (trangleView != nil) return;
-    CGRect frame = CGRectMake(0, yPosition, self.view.frame.size.width, [self arrowHeight]);
+    CGRect frame = CGRectMake(0, yPosition - [self arrowHeight], self.view.frame.size.width, [self arrowHeight]);
     trangleView = [[TTTrangleView alloc] initWithFrame:frame];
 //    NSLog(@"trangle width -> %f", self.view.frame.size.width);
     [trangleView setTrangleW:[self arrowWidth]];

@@ -93,7 +93,7 @@
     CGPoint pC = CGPointMake(trangleEndX, y);
     CGContextSaveGState(ctx);
     CGContextSetStrokeColorWithColor(ctx, [c CGColor]);
-    CGContextSetLineWidth(ctx, lineW-1.0);
+    CGContextSetLineWidth(ctx, lineW-1);
     CGContextSetFillColorWithColor(ctx, [self trangleColor].CGColor);
     CGContextMoveToPoint(ctx, pA.x, pA.y);
     CGContextAddLineToPoint(ctx, pB.x, pB.y);
