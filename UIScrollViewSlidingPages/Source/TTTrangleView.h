@@ -12,6 +12,7 @@
 
 @property (nonatomic, assign) CGFloat trangleW;
 @property (nonatomic, assign) CGFloat trangleH;
+@property (nonatomic, assign) CGFloat titleW;
 @property (nonatomic, strong) UIColor *trangleColor;
 
 @end

@@ -42,7 +42,7 @@
     //slider.titleScrollerHidden = YES;
     self.slider.titleScrollerHeight = 48.0;
     self.slider.titleScrollerItemWidth = 64.0;
-    self.slider.titleAsImageMode = YES;
+//    self.slider.titleAsImageMode = YES;
     //slider.titleScrollerBackgroundColour = [UIColor darkGrayColor];
     //slider.disableTitleScrollerShadow = YES;
     //slider.disableUIPageControl = YES;

@@ -63,21 +63,22 @@
         viewDidLoadHasBeenCalled = NO;
         //set defaults
         self.titleScrollerHeight = 50;
-        self.titleScrollerItemWidth = 50;
+        self.titleScrollerItemWidth = 50*2;
         self.zoomOutAnimationDisabled = NO;
-        self.titleFont = [UIFont boldSystemFontOfSize:16];
+        self.titleFont = [UIFont fontWithName:@"Verdana" size:14.0];
+        self.titleFontSelected = [UIFont fontWithName:@"Verdana-Bold" size:14.0];
         self.loop = NO;
        
-        self.titleColor = [UIColor colorWithRed:177.0/255.0 green:167.0/255.0 blue:159.0/255.0 alpha:1.0];
+        self.titleColor = [UIColor colorWithWhite:170.0/255.0 alpha:1.0];
         self.titleColorSelected = [UIColor colorWithRed:219.0/255.0 green:64.0/255.0 blue:34.0/255.0 alpha:1.0];
         
         self.titleBackgroundColor = [UIColor whiteColor];
-        self.titleBackgroundColorSelected = [UIColor colorWithWhite:247.0/255.0 alpha:1.0];
+        self.titleBackgroundColorSelected = [UIColor whiteColor];
         
 //        self.titleScrollerBackgroundColor = [UIColor colorWithWhite:238.0/255.0 alpha:1.0];
         
         self.arrowWidth = 16.0;
-        self.arrowHeight = 4.0;
+        self.arrowHeight = 5.0;
         
         pageControlHeight = 20.0;
     }
@@ -138,6 +139,7 @@
 //    NSLog(@"trangle width -> %f", self.view.frame.size.width);
     [trangleView setTrangleW:[self arrowWidth]];
     [trangleView setTrangleH:[self arrowHeight]];
+    [trangleView setTitleW:[self titleWidth]];
     [trangleView setTrangleColor:[self titleBackgroundColorSelected]];
     [[self view] addSubview:trangleView];
 }
@@ -623,7 +625,7 @@
     if (self.titleAsImageMode) {
         [self updateTitlesAlpha];
     }else{
-        [self updateTitlesTextColor];
+        [self updateTitlesTextStyle];
     }
 }
 
@@ -640,18 +642,21 @@
     }
 }
 
-- (void)updateTitlesTextColor{
+- (void)updateTitlesTextStyle{
     int pageIndex = [self displayedPageIndex];
     for (int i=0; i<[nodes count]; i++) {
         TTSlidingNode *node = [nodes objectAtIndex:i];
         UILabel *displayedTitleLabel = (UILabel *)[node titleView];
         UIColor *c = [self titleColor];
+        UIFont *f = [self titleFont];
         
         if (pageIndex == i) {
             c = [self titleColorSelected];
+            f = [self titleFontSelected];
         }
         
         [displayedTitleLabel setTextColor:c];
+        [displayedTitleLabel setFont:f];
     }
 }
 

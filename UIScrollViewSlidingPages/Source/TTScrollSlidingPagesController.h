@@ -46,6 +46,7 @@
 
 @property (nonatomic) bool zoomOutAnimationDisabled;
 @property (nonatomic, strong) UIFont *titleFont;
+@property (nonatomic, strong) UIFont *titleFontSelected;
 @property (nonatomic, strong) UIColor *titleColor;
 @property (nonatomic, strong) UIColor *titleColorSelected;
 @property (nonatomic, assign) CGFloat titleScrollerHeight;
