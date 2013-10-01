@@ -37,7 +37,7 @@
 
 
 @property (nonatomic, assign) int displayedPageIndex; // Default is 0.
-@property (nonatomic, strong) id<TTSlidingPagesDataSource> dataSource;
+@property (nonatomic, weak) id<TTSlidingPagesDataSource> dataSource;
 
 //styles
 @property (nonatomic, assign) BOOL loop;    //loop title & page
