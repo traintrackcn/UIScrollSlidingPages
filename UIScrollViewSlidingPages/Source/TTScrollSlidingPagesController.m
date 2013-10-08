@@ -160,7 +160,7 @@
 
 - (void)assembleTopScrollViewWithYPosition:(CGFloat)yPosition{
     titleContainer = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.titleWidth, self.titleHeight)];
-    titleContainer.center = CGPointMake(self.view.center.x, titleContainer.center.y); //center it horizontally
+    titleContainer.center = CGPointMake(self.view.frame.size.width/2.0, titleContainer.center.y); //center it horizontally
     titleContainer.pagingEnabled = YES;
     titleContainer.clipsToBounds = NO;
     titleContainer.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
@@ -171,6 +171,7 @@
     titleContainer.pagingEnabled = YES;
     titleContainer.delegate = self; //move the bottom scroller proportionally as you drag the top.
     [titleContainer setBackgroundColor:[self titleBackgroundColorSelected]];
+    [titleContainer setBackgroundColor:[UIColor blueColor]];
     
 }
 
@@ -258,6 +259,9 @@
     label.font = self.titleFont;
     label.backgroundColor = [UIColor clearColor];
     label.textColor = self.titleColor;
+    label.layer.borderColor = [UIColor grayColor].CGColor;
+    label.layer.borderWidth = 1.0;
+//    label.backgroundColor = [UIColor grayColor];
     
     return label;
 }
