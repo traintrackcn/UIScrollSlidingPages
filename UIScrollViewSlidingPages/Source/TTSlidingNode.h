@@ -14,10 +14,10 @@
 @property (nonatomic, assign) int titleX;
 @property (nonatomic, assign) int pageX;
 @property (nonatomic, assign) int pageIndex;
-@property (nonatomic, strong) UIView *titleView;
-@property (nonatomic, strong) UIView *pageView;
-@property (nonatomic, strong) TTSlidingNode *previousNode;
-@property (nonatomic, strong) TTSlidingNode *nextNode;
+@property (nonatomic, weak) UIView *titleView;
+@property (nonatomic, weak) UIView *pageView;
+@property (nonatomic, weak) TTSlidingNode *previousNode;
+@property (nonatomic, weak) TTSlidingNode *nextNode;
 
 
 

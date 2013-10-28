@@ -11,6 +11,12 @@
 #import "TableViews/TabTwoViewController.h"
 #import "TTViewController.h"
 
+@interface TTAppDelegate(){
+    UINavigationController *nc;
+}
+
+@end
+
 @implementation TTAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -18,12 +24,34 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     UIViewController *mainViewController;
-
     mainViewController = [[TTViewController alloc] init];
+    [mainViewController setTitle:@"Page Slider"];
     
-    self.window.rootViewController = mainViewController;
+    nc = [[UINavigationController alloc] initWithRootViewController:mainViewController];
+//    [nc setTitle:@"Page Slider"];
+//    for (int i=0; i<100; i++) {
+//        [self reloadSlider];
+//    }
+    
+   
+    self.window.rootViewController = nc;
     [self.window makeKeyAndVisible];
+    
+    UITapGestureRecognizer *gc = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reloadSlider)];
+    [self.window addGestureRecognizer:gc];
+    
     return YES;
+}
+
+
+static int loadCount = 0;
+- (void)reloadSlider{
+    UIViewController *vc = [[TTViewController alloc] init];
+    [nc setViewControllers:nil];
+    [nc pushViewController:vc animated:NO];
+    loadCount ++;
+    [vc setTitle:[NSString stringWithFormat:@"Page Slider - %d", loadCount]];
+//    [self  performSelector:@selector(reloadSlider) withObject:nil afterDelay:2.0];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
