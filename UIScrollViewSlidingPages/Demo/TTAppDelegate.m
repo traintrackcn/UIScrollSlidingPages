@@ -14,7 +14,6 @@
 @interface TTAppDelegate(){
     UINavigationController *nc;
 }
-
 @end
 
 @implementation TTAppDelegate
@@ -26,14 +25,7 @@
     UIViewController *mainViewController;
     mainViewController = [[TTViewController alloc] init];
     [mainViewController setTitle:@"Page Slider"];
-    
     nc = [[UINavigationController alloc] initWithRootViewController:mainViewController];
-//    [nc setTitle:@"Page Slider"];
-//    for (int i=0; i<100; i++) {
-//        [self reloadSlider];
-//    }
-    
-   
     self.window.rootViewController = nc;
     [self.window makeKeyAndVisible];
     

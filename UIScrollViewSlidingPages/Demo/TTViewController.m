@@ -76,8 +76,6 @@
     TTBlankViewController *vc = [[TTBlankViewController alloc] initWithNibName:@"TTBlankViewController" bundle:nil];
 //    NSLog(@"[vc textLabel]  -> %@", [vc textLabel] );
     [vc setIndex:index];
-    
-    
     return [[TTSlidingPage alloc] initWithContentViewController:vc];
 }
 
