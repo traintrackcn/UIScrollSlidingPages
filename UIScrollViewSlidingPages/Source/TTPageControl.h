@@ -3,7 +3,7 @@
 //  UIScrollSlidingPages
 //
 //  Created by traintrackcn on 13-9-4.
-//  Copyright (c) 2013年 Thomas Thorpe. All rights reserved.
+//  Copyright (c) 2013 Thomas Thorpe. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
